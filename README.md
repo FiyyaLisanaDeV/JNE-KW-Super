@@ -1,74 +1,102 @@
-# Logistic Vendor
+<div align="center">
+  <img src="public/images/logo.png" alt="Lisanna Logistic Logo" width="200" />
+  <h1>📦 Lisanna Logistic (Logistik Nusantara)</h1>
+  <p><strong>Sistem Manajemen Pengiriman & Operasional Logistik Cerdas</strong></p>
 
-MVP web pengiriman paket antar pelabuhan untuk rute Kendari, Raha, dan Baubau.
+  [![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+  [![Filament](https://img.shields.io/badge/Filament-v3-EAB308?style=for-the-badge&logo=laravel&logoColor=white)](https://filamentphp.com)
+  [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+  [![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+</div>
 
-## Stack
+<hr/>
 
-- Laravel 12
-- Filament 4
-- MySQL 8
-- Tailwind/Vite bawaan Laravel
+## ✨ Fitur Unggulan
 
-## Local Setup
+- 🚛 **Manajemen Cabang & Wilayah**: Integrasi API data wilayah otomatis untuk area Sulawesi (Sulawesi Selatan, Tengah, dan Tenggara).
+- 📦 **Pembuatan Resi (AWB) Dinamis**: Pembuatan nomor resi otomatis yang cerdas dan anti-bentrok.
+- 💰 **Kalkulasi Ongkir Cerdas**: Penghitungan tarif otomatis dengan *Pricing Rules* berdasarkan wilayah asal dan tujuan.
+- 🚚 **Manifest Kendaraan**: Kelola jadwal keberangkatan, rute, dan daftar muatan setiap armada/kurir.
+- 🔍 **Tracking Instan**: Pelacakan posisi paket secara *real-time* via Dasbor operasional yang *clean* dan super cepat.
+- 📊 **Dashboard Analitik**: Ringkasan performa pengiriman hari ini (jumlah paket masuk, proses, tiba, hingga ongkir terkumpul) yang menggunakan gaya desain modern.
 
-Pastikan PHP, Composer, Node.js, npm, Git, dan MySQL sudah tersedia di terminal.
+---
 
-```powershell
+## 🚀 Memulai Instalasi Lokal
+
+Siapkan kopi Anda ☕, lalu pastikan sistem sudah memiliki **PHP**, **Composer**, **Node.js**, **Git**, dan **MySQL**.
+
+### 1. Kloning & Persiapan
+Buka terminal dan eksekusi perintah ini:
+```bash
+git clone https://github.com/FiyyaLisanaDeV/JNE-KW-Super.git
+cd JNE-KW-Super
+
 composer install
 npm install
-copy .env.example .env
-php artisan key:generate
-php artisan migrate
 ```
 
-Untuk lokal development, ubah `.env` menjadi:
-
+### 2. Konfigurasi Lingkungan
+Buat *file* konfigurasi lokal (*environment*):
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Edit file `.env` dan pastikan konfigurasi *database* sesuai dengan sistem lokal Anda:
 ```env
-APP_ENV=local
-APP_DEBUG=true
-APP_URL=http://127.0.0.1:8000
-
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=logistic_vendor
-DB_USERNAME=superadmin
-DB_PASSWORD=password_database_lokal
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-## Run Locally
+### 3. Migrasi & Sinkronisasi Wilayah
+Jalankan migrasi *database* untuk membuat semua struktur tabel:
+```bash
+php artisan migrate
+```
+**Penting:** Tarik data Provinsi, Kota/Kabupaten, dan Kecamatan langsung dari API Resmi Emsifa!
+```bash
+php artisan app:sync-regions
+```
 
-```powershell
+### 4. Nyalakan Mesin!
+Buka terminal dan jalankan server PHP bawaan:
+```bash
 php artisan serve
 ```
-
-Admin panel:
-
-```text
-http://localhost:8000/admin
+Buka **terminal baru** untuk menjalankan kompilator aset tampilan (TailwindCSS):
+```bash
+npm run dev
 ```
 
-Default development admin:
+---
 
-```text
-Email: superadmin@example.com
-Password: password
-```
+## 🔐 Akses Admin Panel
 
-Ganti password sebelum production.
+Masuk ke markas besar operasional Anda:
+👉 **[http://localhost:8000/admin](http://localhost:8000/admin)**
 
-Command production readiness:
+**Kredensial Default Development:**
+- **Email:** `superadmin@example.com`
+- **Password:** `password`
 
-```powershell
-php artisan app:production-check
-php artisan app:set-user-password superadmin@example.com --generate
-```
+> [!WARNING]  
+> **Keamanan:** Segera ganti *password* bawaan ini apabila sistem sudah masuk ke lingkungan *Production*! 🚨
 
-## Documentation
+---
 
-- `docs/USER_GUIDE.md`: panduan operasional admin/operator.
-- `docs/QA.md`: catatan test dan smoke test terakhir.
-- `docs/DEPLOYMENT.md`: deployment, backup, dan smoke test production.
-- `docs/PRODUCTION_READINESS.md`: status kesiapan production dan kriteria go-live.
-- `docs/DATABASE.md`: entity dan index penting.
-- `docs/MODULES.md`: ringkasan modul per mission.
+## 📚 Pusat Dokumentasi
+
+Ingin menggali lebih dalam? Silakan baca direktori dokumentasi internal di `docs/`:
+- 📖 **[Panduan Pengguna (USER_GUIDE)](docs/USER_GUIDE.md)** - Cara sakti pakai aplikasi.
+- 🗄️ **[Arsitektur Database (DATABASE)](docs/DATABASE.md)** - Struktur tabel & relasi (*schema*).
+- 🚀 **[Panduan Rilis (DEPLOYMENT)](docs/DEPLOYMENT.md)** - *Checklist* rahasia sebelum terbang ke *production*.
+- 🧪 **[Catatan Uji Coba (QA)](docs/QA.md)** - Laporan pengujian aplikasi terbaru.
+
+---
+<div align="center">
+  Dibuat dengan ❤️ untuk masa depan operasional logistik.
+</div>
