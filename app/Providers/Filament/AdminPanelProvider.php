@@ -34,9 +34,12 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarWidth('260px')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
-                'primary' => Color::hex('#006b2c'),
-                'success' => Color::hex('#1f6c3a'),
-                'gray' => Color::hex('#6e7b6c'),
+                'primary' => Color::hex('#2F7D4A'),
+                'success' => Color::hex('#167C4D'),
+                'warning' => Color::hex('#9A6700'),
+                'danger' => Color::hex('#B42318'),
+                'info' => Color::hex('#175CD3'),
+                'gray' => Color::hex('#6B7280'),
             ])
             ->renderHook(
                 PanelsRenderHook::BODY_END,

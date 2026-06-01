@@ -4,11 +4,11 @@ namespace App\Filament\Resources\Branches\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Table;
 
 class BranchesTable
@@ -16,50 +16,55 @@ class BranchesTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->heading('Cabang')
-            ->description('Daftar titik operasional untuk penerimaan, transit, dan tujuan paket.')
             ->columns([
-                TextColumn::make('name')
-                    ->label('Cabang')
-                    ->searchable(),
-                TextColumn::make('city')
-                    ->label('Kota')
-                    ->searchable(),
-                TextColumn::make('phone')
-                    ->label('Telepon')
-                    ->searchable(),
-                TextColumn::make('is_active')
-                    ->label('Status')
-                    ->badge()
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Aktif' : 'Tidak Aktif')
-                    ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
-                TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label('Diperbarui')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Split::make([
+                    Stack::make([
+                        TextColumn::make('name')
+                            ->searchable()
+                            ->weight('bold')
+                            ->size('lg')
+                            ->color('primary'),
+                        TextColumn::make('type')
+                            ->badge()
+                            ->color('info'),
+                    ])->space(1),
+                    
+                    Stack::make([
+                        TextColumn::make('city.name')
+                            ->searchable()
+                            ->icon('heroicon-m-building-office')
+                            ->color('gray'),
+                        TextColumn::make('district.name')
+                            ->searchable()
+                            ->icon('heroicon-m-map')
+                            ->color('gray'),
+                    ])->space(1),
+                    
+                    Stack::make([
+                        TextColumn::make('phone')
+                            ->searchable()
+                            ->icon('heroicon-m-phone')
+                            ->color('gray'),
+                        IconColumn::make('is_active')
+                            ->boolean()
+                            ->label('Status Aktif'),
+                    ])->space(1)->alignEnd(),
+                ])->from('md')
+            ])
+            ->contentGrid([
+                'default' => 1,
             ])
             ->filters([
-                TernaryFilter::make('is_active')
-                    ->label('Aktif'),
-            ], layout: FiltersLayout::AboveContent)
-            ->filtersFormColumns([
-                'md' => 2,
-                'xl' => 4,
+                //
             ])
             ->recordActions([
-                EditAction::make()->label('Ubah'),
-                DeleteAction::make()->label('Hapus'),
+                EditAction::make()->color('primary'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Terpilih'),
+                    DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordClasses(fn () => 'bg-white hover:bg-slate-50 transition-colors border-b border-gray-100');
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,21 +9,20 @@ class PricingRule extends Model
 {
     use HasFactory;
 
-    public const CATEGORY_KECIL = 'kecil';
-    public const CATEGORY_SEDANG = 'sedang';
-    public const CATEGORY_BESAR_RINGAN = 'besar_ringan';
-    public const CATEGORY_KHUSUS = 'khusus';
+    public const SERVICE_REGULER = 'reguler';
+    public const SERVICE_B2B = 'b2b';
+    public const SERVICE_EKONOMIS = 'ekonomis';
 
-    public const CATEGORIES = [
-        self::CATEGORY_KECIL,
-        self::CATEGORY_SEDANG,
-        self::CATEGORY_BESAR_RINGAN,
-        self::CATEGORY_KHUSUS,
+    public const SERVICES = [
+        self::SERVICE_REGULER,
+        self::SERVICE_B2B,
+        self::SERVICE_EKONOMIS,
     ];
 
     protected $fillable = [
-        'route_id',
-        'package_category',
+        'origin_city_id',
+        'destination_city_id',
+        'service_type',
         'base_price',
         'price_per_kg',
         'minimum_weight',
@@ -51,8 +49,13 @@ class PricingRule extends Model
         ];
     }
 
-    public function route(): BelongsTo
+    public function originCity(): BelongsTo
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(City::class, 'origin_city_id');
+    }
+
+    public function destinationCity(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'destination_city_id');
     }
 }

@@ -27,6 +27,7 @@ class Shipment extends Model
     public const STATUS_IN_TRANSIT = 'in_transit';
     public const STATUS_ARRIVED_DESTINATION = 'arrived_destination';
     public const STATUS_READY_FOR_PICKUP = 'ready_for_pickup';
+    public const STATUS_OUT_FOR_DELIVERY = 'out_for_delivery';
     public const STATUS_COMPLETED = 'completed';
     public const STATUS_PROBLEM = 'problem';
     public const STATUS_CANCELLED = 'cancelled';
@@ -37,6 +38,7 @@ class Shipment extends Model
         self::STATUS_IN_TRANSIT,
         self::STATUS_ARRIVED_DESTINATION,
         self::STATUS_READY_FOR_PICKUP,
+        self::STATUS_OUT_FOR_DELIVERY,
         self::STATUS_COMPLETED,
         self::STATUS_PROBLEM,
         self::STATUS_CANCELLED,
@@ -52,9 +54,10 @@ class Shipment extends Model
         'receiver_phone',
         'receiver_city',
         'receiver_address',
-        'route_id',
+        'service_type',
+        'origin_branch_id',
+        'destination_branch_id',
         'item_description',
-        'package_category',
         'koli_count',
         'actual_weight',
         'length_cm',
@@ -78,6 +81,7 @@ class Shipment extends Model
         'completed_at',
         'created_by',
         'destination_agent_id',
+        'courier_id',
         'public_tracking_token',
         'internal_note',
         'customer_note',
@@ -107,9 +111,14 @@ class Shipment extends Model
         ];
     }
 
-    public function route(): BelongsTo
+    public function originBranch(): BelongsTo
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Branch::class, 'origin_branch_id');
+    }
+
+    public function destinationBranch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'destination_branch_id');
     }
 
     public function creator(): BelongsTo
@@ -120,6 +129,11 @@ class Shipment extends Model
     public function destinationAgent(): BelongsTo
     {
         return $this->belongsTo(User::class, 'destination_agent_id');
+    }
+
+    public function courier(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'courier_id');
     }
 
     public function statusLogs(): HasMany

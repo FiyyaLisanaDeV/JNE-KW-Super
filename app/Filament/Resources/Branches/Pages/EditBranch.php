@@ -13,8 +13,7 @@ class EditBranch extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make()
-                ->label('Hapus'),
+            DeleteAction::make(),
         ];
     }
 }

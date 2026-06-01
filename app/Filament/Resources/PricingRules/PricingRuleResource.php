@@ -13,21 +13,17 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use UnitEnum;
 
 class PricingRuleResource extends Resource
 {
     protected static ?string $model = PricingRule::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static ?string $navigationLabel = 'Tarif';
-
-    protected static ?string $modelLabel = 'Tarif';
-
-    protected static ?string $pluralModelLabel = 'Tarif';
-
-    protected static string|UnitEnum|null $navigationGroup = 'Data Master';
+    protected static ?string $modelLabel = 'Aturan Tarif';
+    protected static ?string $pluralModelLabel = 'Daftar Tarif';
+    protected static ?string $navigationLabel = 'Aturan Tarif';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen Internal';
+    
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
     public static function form(Schema $schema): Schema
     {

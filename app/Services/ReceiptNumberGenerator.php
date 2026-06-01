@@ -2,18 +2,20 @@
 
 namespace App\Services;
 
-use App\Models\Route;
+use App\Models\Branch;
 use App\Models\Shipment;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 
 class ReceiptNumberGenerator
 {
-    public function generate(Route $route, ?CarbonInterface $date = null): string
+    public function generate(Branch $branch, ?CarbonInterface $date = null): string
     {
         $date ??= Carbon::now();
         $datePart = $date->format('ymd');
-        $prefix = "{$route->route_code}-{$datePart}-";
+        // Using BR followed by branch ID as code prefix
+        $branchCode = 'BR' . str_pad($branch->id, 3, '0', STR_PAD_LEFT);
+        $prefix = "{$branchCode}-{$datePart}-";
 
         $latestReceipt = Shipment::query()
             ->where('receipt_number', 'like', "{$prefix}%")

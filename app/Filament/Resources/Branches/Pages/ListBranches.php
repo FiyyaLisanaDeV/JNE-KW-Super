@@ -10,18 +10,10 @@ class ListBranches extends ListRecords
 {
     protected static string $resource = BranchResource::class;
 
-    protected static ?string $title = 'Cabang Operasional';
-
-    public function getSubheading(): ?string
-    {
-        return 'Kelola kantor asal, agen tujuan, dan status cabang pengiriman.';
-    }
-
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()
-                ->label('Tambah Cabang'),
+            CreateAction::make(),
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Route;
+use App\Models\Branch;
 use App\Models\Shipment;
 use App\Models\User;
 use BackedEnum;
@@ -26,7 +26,7 @@ class DailyReport extends Page
 
     public ?string $date = null;
 
-    public ?int $route_id = null;
+    public ?int $branch_id = null;
 
     public ?string $status = null;
 
@@ -42,9 +42,9 @@ class DailyReport extends Page
     public function getRowsProperty(): Collection
     {
         return Shipment::query()
-            ->with(['route', 'creator', 'destinationAgent'])
+            ->with(['originBranch', 'destinationBranch', 'creator', 'destinationAgent'])
             ->when($this->date, fn ($query) => $query->whereDate('created_at', $this->date))
-            ->when($this->route_id, fn ($query) => $query->where('route_id', $this->route_id))
+            ->when($this->branch_id, fn ($query) => $query->where('origin_branch_id', $this->branch_id)->orWhere('destination_branch_id', $this->branch_id))
             ->when($this->status, fn ($query) => $query->where('status', $this->status))
             ->when($this->admin_id, fn ($query) => $query->where('created_by', $this->admin_id))
             ->when($this->agent_id, fn ($query) => $query->where('destination_agent_id', $this->agent_id))
@@ -53,10 +53,10 @@ class DailyReport extends Page
             ->get();
     }
 
-    public function getRoutesProperty(): Collection
+    public function getBranchesProperty(): Collection
     {
-        return Route::query()
-            ->orderBy('route_code')
+        return Branch::query()
+            ->orderBy('name')
             ->get();
     }
 

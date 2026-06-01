@@ -10,18 +10,10 @@ class ListManifests extends ListRecords
 {
     protected static string $resource = ManifestResource::class;
 
-    protected static ?string $title = 'Manifest Pengiriman';
-
-    public function getSubheading(): ?string
-    {
-        return 'Susun manifest, cetak daftar muatan, dan tandai keberangkatan atau kedatangan.';
-    }
-
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()
-                ->label('Buat Manifest'),
+            CreateAction::make(),
         ];
     }
 }

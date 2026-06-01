@@ -7,7 +7,7 @@ use Filament\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/admin');
+    return view('welcome');
 });
 
 Route::middleware(Authenticate::class)->group(function (): void {

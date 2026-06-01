@@ -5,9 +5,7 @@ namespace App\Filament\Resources\Shipments;
 use App\Filament\Resources\Shipments\Pages\CreateShipment;
 use App\Filament\Resources\Shipments\Pages\EditShipment;
 use App\Filament\Resources\Shipments\Pages\ListShipments;
-use App\Filament\Resources\Shipments\Pages\ViewShipment;
 use App\Filament\Resources\Shipments\Schemas\ShipmentForm;
-use App\Filament\Resources\Shipments\Schemas\ShipmentInfolist;
 use App\Filament\Resources\Shipments\Tables\ShipmentsTable;
 use App\Models\Shipment;
 use BackedEnum;
@@ -15,21 +13,18 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use UnitEnum;
 
 class ShipmentResource extends Resource
 {
     protected static ?string $model = Shipment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static string|UnitEnum|null $navigationGroup = 'Operasional';
-
-    protected static ?string $navigationLabel = 'Paket';
-
-    protected static ?string $modelLabel = 'Paket';
-
-    protected static ?string $pluralModelLabel = 'Paket';
+    protected static ?string $modelLabel = 'Resi Pengiriman';
+    protected static ?string $pluralModelLabel = 'Daftar Resi';
+    protected static ?string $navigationLabel = 'Resi Pengiriman';
+    protected static \UnitEnum|string|null $navigationGroup = 'Operasional';
+    protected static ?int $navigationSort = 1;
+    
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
     public static function form(Schema $schema): Schema
     {
@@ -39,11 +34,6 @@ class ShipmentResource extends Resource
     public static function table(Table $table): Table
     {
         return ShipmentsTable::configure($table);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return ShipmentInfolist::configure($schema);
     }
 
     public static function getRelations(): array
@@ -58,7 +48,6 @@ class ShipmentResource extends Resource
         return [
             'index' => ListShipments::route('/'),
             'create' => CreateShipment::route('/create'),
-            'view' => ViewShipment::route('/{record}'),
             'edit' => EditShipment::route('/{record}/edit'),
         ];
     }

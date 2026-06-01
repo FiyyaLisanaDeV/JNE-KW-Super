@@ -2,100 +2,95 @@
 
 namespace App\Filament\Resources\Manifests\Tables;
 
-use App\Models\Manifest;
-use App\Services\ManifestStatusUpdater;
-use App\Support\IndonesianLabels;
-use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
 
 class ManifestsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->heading('Manifest')
-            ->description('Daftar perjalanan paket berdasarkan rute, tanggal, dan status manifest.')
             ->columns([
-                TextColumn::make('manifest_number')
-                    ->label('Nomor Manifest')
-                    ->searchable(),
-                TextColumn::make('route.route_code')
-                    ->label('Rute')
-                    ->searchable(),
-                TextColumn::make('departure_date')
-                    ->label('Tanggal Berangkat')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->label('Status')
-                    ->badge()
-                    ->formatStateUsing(fn (?string $state): string => IndonesianLabels::manifestStatus($state))
-                    ->color(fn (?string $state): string => match ($state) {
-                        Manifest::STATUS_ARRIVED, Manifest::STATUS_CLOSED => 'success',
-                        Manifest::STATUS_DEPARTED => 'info',
-                        Manifest::STATUS_CANCELLED => 'danger',
-                        default => 'gray',
-                    })
-                    ->searchable(),
-                TextColumn::make('originAdmin.name')
-                    ->label('Petugas Asal')
-                    ->searchable(),
-                TextColumn::make('destinationAgent.name')
-                    ->label('Agen Tujuan')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label('Diperbarui')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Split::make([
+                    Stack::make([
+                        TextColumn::make('manifest_number')
+                            ->searchable()
+                            ->weight('bold')
+                            ->size('lg')
+                            ->color('primary')
+                            ->copyable(),
+                        TextColumn::make('departure_date')
+                            ->date('d M Y')
+                            ->color('gray'),
+                    ])->space(1),
+                    
+                    Stack::make([
+                        TextColumn::make('driver.name')
+                            ->searchable()
+                            ->icon('heroicon-m-user')
+                            ->color('gray'),
+                        TextColumn::make('vehicle_number')
+                            ->searchable()
+                            ->icon('heroicon-m-truck')
+                            ->color('gray'),
+                    ])->space(1),
+                    
+                    Stack::make([
+                        TextColumn::make('originBranch.name')
+                            ->searchable()
+                            ->badge()
+                            ->color('gray'),
+                        TextColumn::make('destinationBranch.name')
+                            ->searchable()
+                            ->badge()
+                            ->color('info'),
+                    ])->space(1),
+                    
+                    Stack::make([
+                        TextColumn::make('status')
+                            ->badge()
+                            ->searchable()
+                            ->color(fn (string $state): string => match ($state) {
+                                'draft' => 'gray',
+                                'ready' => 'warning',
+                                'departed' => 'info',
+                                'arrived' => 'success',
+                                'completed' => 'success',
+                                default => 'gray',
+                            }),
+                        TextColumn::make('type')
+                            ->badge()
+                            ->color('primary'),
+                    ])->space(1)->alignEnd(),
+                ])->from('md')
+            ])
+            ->contentGrid([
+                'default' => 1,
             ])
             ->filters([
-                SelectFilter::make('route_id')->label('Rute')->relationship('route', 'route_code'),
-                SelectFilter::make('status')->label('Status')->options(IndonesianLabels::manifestStatuses()),
-            ], layout: FiltersLayout::AboveContent)
-            ->filtersFormColumns([
-                'md' => 2,
-                'xl' => 4,
+                //
             ])
             ->recordActions([
                 Action::make('print')
                     ->label('Cetak')
-                    ->url(fn (Manifest $record): string => route('manifests.print', $record))
-                    ->openUrlInNewTab(),
-                Action::make('markDeparted')
-                    ->label('Tandai Berangkat')
-                    ->visible(fn (Manifest $record): bool => $record->status === Manifest::STATUS_DRAFT)
-                    ->requiresConfirmation()
-                    ->action(function (Manifest $record): void {
-                        app(ManifestStatusUpdater::class)->markDeparted($record, auth()->id());
-                        Notification::make()->success()->title('Manifest ditandai berangkat')->send();
-                    }),
-                Action::make('markArrived')
-                    ->label('Tandai Tiba')
-                    ->visible(fn (Manifest $record): bool => $record->status === Manifest::STATUS_DEPARTED)
-                    ->requiresConfirmation()
-                    ->action(function (Manifest $record): void {
-                        app(ManifestStatusUpdater::class)->markArrived($record, auth()->id());
-                        Notification::make()->success()->title('Manifest ditandai tiba')->send();
-                    }),
-                EditAction::make()->label('Ubah'),
+                    ->icon('heroicon-o-printer')
+                    ->url(fn ($record) => route('manifests.print', $record))
+                    ->openUrlInNewTab()
+                    ->color('info'),
+                EditAction::make()->color('primary'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Terpilih'),
+                    DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->recordClasses(fn () => 'bg-white hover:bg-slate-50 transition-colors border-b border-gray-100');
     }
 }

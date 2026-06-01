@@ -13,21 +13,17 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use UnitEnum;
 
 class BranchResource extends Resource
 {
     protected static ?string $model = Branch::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static ?string $navigationLabel = 'Cabang';
-
-    protected static ?string $modelLabel = 'Cabang';
-
-    protected static ?string $pluralModelLabel = 'Cabang';
-
-    protected static string|UnitEnum|null $navigationGroup = 'Data Master';
+    protected static ?string $modelLabel = 'Cabang / Agen';
+    protected static ?string $pluralModelLabel = 'Daftar Cabang';
+    protected static ?string $navigationLabel = 'Cabang & Agen';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen Internal';
+    
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
 
     public static function form(Schema $schema): Schema
     {

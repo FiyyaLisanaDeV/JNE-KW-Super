@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Manifest extends Model
 {
     use HasFactory;
+    
+    public const TYPE_PICKUP = 'pickup';
+    public const TYPE_LINEHAUL = 'linehaul';
+    public const TYPE_DELIVERY = 'delivery';
 
     public const STATUS_DRAFT = 'draft';
     public const STATUS_DEPARTED = 'departed';
@@ -27,7 +31,11 @@ class Manifest extends Model
 
     protected $fillable = [
         'manifest_number',
-        'route_id',
+        'type',
+        'origin_branch_id',
+        'destination_branch_id',
+        'driver_id',
+        'vehicle_number',
         'departure_date',
         'status',
         'origin_admin_id',
@@ -42,9 +50,14 @@ class Manifest extends Model
         ];
     }
 
-    public function route(): BelongsTo
+    public function originBranch(): BelongsTo
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Branch::class, 'origin_branch_id');
+    }
+
+    public function destinationBranch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'destination_branch_id');
     }
 
     public function originAdmin(): BelongsTo
@@ -55,6 +68,11 @@ class Manifest extends Model
     public function destinationAgent(): BelongsTo
     {
         return $this->belongsTo(User::class, 'destination_agent_id');
+    }
+
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'driver_id');
     }
 
     public function items(): HasMany

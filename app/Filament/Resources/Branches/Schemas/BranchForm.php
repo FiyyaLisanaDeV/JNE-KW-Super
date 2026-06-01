@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Branches\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -14,24 +15,23 @@ class BranchForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Nama Cabang')
-                    ->maxLength(255)
                     ->required(),
-                TextInput::make('city')
-                    ->label('Kota')
-                    ->maxLength(255)
-                    ->required(),
+                TextInput::make('type')
+                    ->required()
+                    ->default('drop_point'),
+                Select::make('city_id')
+                    ->relationship('city', 'name')
+                    ->default(null),
+                Select::make('district_id')
+                    ->relationship('district', 'name')
+                    ->default(null),
                 Textarea::make('address')
-                    ->label('Alamat')
-                    ->rows(3)
+                    ->default(null)
                     ->columnSpanFull(),
                 TextInput::make('phone')
-                    ->label('Telepon')
-                    ->maxLength(50)
-                    ->tel(),
+                    ->tel()
+                    ->default(null),
                 Toggle::make('is_active')
-                    ->label('Aktif')
-                    ->default(true)
                     ->required(),
             ]);
     }

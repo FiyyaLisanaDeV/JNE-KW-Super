@@ -2,17 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\Branch;
 use App\Models\Manifest;
-use App\Models\Route;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 
 class ManifestNumberGenerator
 {
-    public function generate(Route $route, ?CarbonInterface $date = null): string
+    public function generate(Branch $branch, ?CarbonInterface $date = null): string
     {
         $date ??= Carbon::now();
-        $prefix = 'MNF-'.$route->route_code.'-'.$date->format('ymd').'-';
+        $branchCode = 'BR' . str_pad($branch->id, 3, '0', STR_PAD_LEFT);
+        $prefix = 'MNF-'.$branchCode.'-'.$date->format('ymd').'-';
+        
         $latest = Manifest::query()
             ->where('manifest_number', 'like', "{$prefix}%")
             ->lockForUpdate()

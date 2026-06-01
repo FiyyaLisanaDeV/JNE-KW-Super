@@ -10,18 +10,10 @@ class ListShipments extends ListRecords
 {
     protected static string $resource = ShipmentResource::class;
 
-    protected static ?string $title = 'Paket';
-
-    public function getSubheading(): ?string
-    {
-        return 'Input paket baru, pantau status pengiriman, dan kelola pembayaran.';
-    }
-
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()
-                ->label('Input Paket'),
+            CreateAction::make(),
         ];
     }
 }

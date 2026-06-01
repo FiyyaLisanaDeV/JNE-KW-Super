@@ -6,10 +6,10 @@
             </x-filament::input.wrapper>
 
             <x-filament::input.wrapper>
-                <x-filament::input.select wire:model.live="route_id">
-                    <option value="">Semua rute</option>
-                    @foreach ($this->routes as $route)
-                        <option value="{{ $route->id }}">{{ $route->route_code }} - {{ $route->origin_city }} ke {{ $route->destination_city }}</option>
+                <x-filament::input.select wire:model.live="branch_id">
+                    <option value="">Semua Cabang</option>
+                    @foreach ($this->branches as $branch)
+                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                     @endforeach
                 </x-filament::input.select>
             </x-filament::input.wrapper>
@@ -70,7 +70,7 @@
                     <thead>
                         <tr class="border-b border-gray-200 text-xs uppercase text-gray-500 dark:border-gray-700 dark:text-gray-400">
                             <th class="whitespace-nowrap px-3 py-2">Resi</th>
-                            <th class="whitespace-nowrap px-3 py-2">Rute</th>
+                            <th class="whitespace-nowrap px-3 py-2">Rute Cabang</th>
                             <th class="whitespace-nowrap px-3 py-2">Pengirim</th>
                             <th class="whitespace-nowrap px-3 py-2">Penerima</th>
                             <th class="whitespace-nowrap px-3 py-2">Status</th>
@@ -83,7 +83,7 @@
                         @forelse ($this->rows as $shipment)
                             <tr class="border-b border-gray-100 dark:border-gray-800">
                                 <td class="whitespace-nowrap px-3 py-2 font-medium">{{ $shipment->receipt_number }}</td>
-                                <td class="whitespace-nowrap px-3 py-2">{{ $shipment->route->route_code }}</td>
+                                <td class="whitespace-nowrap px-3 py-2">{{ $shipment->originBranch?->name ?? '-' }} &rarr; {{ $shipment->destinationBranch?->name ?? '-' }}</td>
                                 <td class="px-3 py-2">{{ $shipment->sender_name }}</td>
                                 <td class="px-3 py-2">{{ $shipment->receiver_name }}</td>
                                 <td class="whitespace-nowrap px-3 py-2">{{ \App\Support\IndonesianLabels::shipmentStatus($shipment->status) }}</td>
