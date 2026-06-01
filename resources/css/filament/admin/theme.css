@@ -8,7 +8,7 @@
     --font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     
     /* Design System Colors */
-    --c-bg: #F4FAF6;
+    --c-bg: #F8FAF8;
     --c-surface: #FFFFFF;
     
     --c-primary: #2F7D4A;
@@ -19,7 +19,8 @@
     
     --c-text-main: #1F2937;
     --c-text-sec: #6B7280;
-    --c-border: #D8E6DB;
+    --c-border: #BBCABF;
+    --c-border-soft: #D8E6DB;
     
     --c-success-bg: #ECFDF3;
     --c-success-text: #167C4D;
@@ -34,7 +35,7 @@
     --c-info-text: #175CD3;
 
     /* Filament specific overrides */
-    --sidebar-width: 280px;
+    --sidebar-width: 220px;
 }
 
 html, body, .fi-body {
@@ -43,42 +44,80 @@ html, body, .fi-body {
     font-family: var(--font-family) !important;
 }
 
+* {
+    letter-spacing: 0 !important;
+}
+
 /* Typography & Layout */
 .fi-main {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
     padding-inline: 16px;
 }
 @media (min-width: 768px) {
     .fi-main {
-        padding-inline: 24px;
+        padding-inline: 32px;
     }
+}
+
+.fi-main-ctn {
+    background-color: var(--c-bg) !important;
+}
+
+.fi-page {
+    row-gap: 24px !important;
+}
+
+.fi-page-header {
+    margin-bottom: 8px !important;
+}
+
+.fi-page-heading {
+    color: var(--c-text-main) !important;
+    font-size: 24px !important;
+    line-height: 32px !important;
+    font-weight: 700 !important;
+}
+
+.fi-breadcrumbs,
+.fi-breadcrumbs a,
+.fi-breadcrumbs span {
+    color: var(--c-text-sec) !important;
+    font-size: 13px !important;
 }
 
 /* Sidebar & Topbar */
 .fi-sidebar {
     background-color: var(--c-surface) !important;
     border-right: 1px solid var(--c-border) !important;
+    box-shadow: none !important;
 }
 .fi-topbar {
-    background-color: var(--c-surface) !important;
+    min-height: 72px !important;
+    background-color: rgba(247, 251, 248, 0.96) !important;
     border-bottom: 1px solid var(--c-border) !important;
     box-shadow: none !important;
+    backdrop-filter: blur(12px);
+}
+
+.fi-topbar nav,
+.fi-topbar .fi-breadcrumbs {
+    font-size: 14px !important;
 }
 
 /* Logo */
 .fi-logo {
     color: var(--c-primary) !important;
-    font-weight: 800 !important;
-    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
 }
 
 /* Sidebar Items */
 .fi-sidebar-item a, .fi-sidebar-group-button {
-    border-radius: 8px !important;
+    border-radius: 12px !important;
     color: var(--c-text-sec) !important;
     margin-inline: 12px;
-    padding: 10px 16px !important;
+    padding: 10px 12px !important;
     min-height: 44px !important; /* Mobile friendly touch target */
 }
 .fi-sidebar-item a:hover {
@@ -86,17 +125,54 @@ html, body, .fi-body {
     color: var(--c-primary) !important;
 }
 .fi-sidebar-item.fi-active a {
-    background-color: var(--c-soft) !important;
+    background-color: rgba(16, 185, 129, 0.10) !important;
+    border-left: 4px solid var(--c-primary) !important;
     color: var(--c-dark) !important;
     font-weight: 600 !important;
 }
 
+.fi-sidebar-item svg,
+.fi-sidebar-group-button svg,
+.fi-topbar svg,
+.fi-btn svg,
+.fi-ta svg,
+.fi-fo svg,
+.fi-modal svg {
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+    stroke-width: 1.8 !important;
+}
+
 /* Cards & Surfaces */
-.fi-section, .fi-ta-ctn, .fi-fo-component-ctn, .fi-wi-stats-overview-stat {
+.fi-section,
+.fi-ta-ctn,
+.fi-fo-component-ctn,
+.fi-wi-stats-overview-stat,
+.fi-modal-window,
+.fi-dropdown-panel,
+.fi-in-section {
     background-color: var(--c-surface) !important;
-    border: 1px solid var(--c-border) !important;
-    border-radius: 16px !important;
+    border: 1px solid var(--c-border-soft) !important;
+    border-radius: 12px !important;
     box-shadow: 0 2px 8px rgba(47, 125, 74, 0.04) !important;
+}
+
+.fi-section-header {
+    border-bottom-color: var(--c-border-soft) !important;
+}
+
+.fi-section-heading,
+.fi-modal-heading {
+    color: var(--c-text-main) !important;
+    font-size: 18px !important;
+    line-height: 28px !important;
+    font-weight: 600 !important;
+}
+
+.fi-section-description,
+.fi-modal-description {
+    color: var(--c-text-sec) !important;
 }
 
 /* Buttons */
@@ -114,17 +190,47 @@ html, body, .fi-body {
     background-color: var(--c-dark) !important;
 }
 
-/* Inputs */
-.fi-input, .fi-select-input, .fi-fo-select select, .fi-fo-text-input input, .fi-fo-textarea textarea {
-    border-radius: 12px !important;
-    border-color: var(--c-border) !important;
-    min-height: 44px !important;
-    background-color: #FAFAFA !important;
+.fi-btn-color-gray {
+    border-color: var(--c-border-soft) !important;
+    color: var(--c-text-main) !important;
 }
-.fi-input:focus, .fi-select-input:focus {
+
+.fi-icon-btn {
+    border-radius: 10px !important;
+}
+
+/* Inputs */
+.fi-input,
+.fi-select-input,
+.fi-fo-select select,
+.fi-fo-text-input input,
+.fi-fo-textarea textarea,
+.fi-fo-date-time-picker input {
+    border-radius: 12px !important;
+    border-color: var(--c-border-soft) !important;
+    min-height: 44px !important;
+    background-color: #F8FBF9 !important;
+    color: var(--c-text-main) !important;
+}
+.fi-input:focus,
+.fi-select-input:focus,
+.fi-fo-select select:focus,
+.fi-fo-text-input input:focus,
+.fi-fo-textarea textarea:focus {
     border-color: var(--c-primary) !important;
     box-shadow: 0 0 0 3px var(--c-soft) !important;
     background-color: #FFFFFF !important;
+}
+
+.fi-fo-field-wrp-label span,
+.fi-fo-field-wrp-label label {
+    color: var(--c-text-main) !important;
+    font-weight: 600 !important;
+}
+
+.fi-fo-field-wrp-helper-text,
+.fi-fo-field-wrp-error-message {
+    font-size: 12px !important;
 }
 
 /* Badges */
@@ -134,9 +240,30 @@ html, body, .fi-body {
     font-weight: 600 !important;
 }
 
+.fi-badge-color-primary,
+.fi-badge-color-success {
+    background-color: var(--c-success-bg) !important;
+    color: var(--c-success-text) !important;
+}
+
+.fi-badge-color-info {
+    background-color: var(--c-hover-soft) !important;
+    color: var(--c-primary) !important;
+}
+
+.fi-badge-color-warning {
+    background-color: var(--c-warning-bg) !important;
+    color: var(--c-warning-text) !important;
+}
+
+.fi-badge-color-danger {
+    background-color: var(--c-error-bg) !important;
+    color: var(--c-error-text) !important;
+}
+
 /* Table overrides for cleaner look */
 .fi-ta-table thead {
-    background-color: #FAFAFA !important;
+    background-color: #F8FBF9 !important;
 }
 .fi-ta-header-cell {
     background-color: transparent !important;
@@ -148,13 +275,47 @@ html, body, .fi-body {
     letter-spacing: normal !important;
 }
 .fi-ta-row {
-    border-bottom: 1px solid var(--c-border) !important;
+    border-bottom: 1px solid var(--c-border-soft) !important;
 }
 .fi-ta-row:hover {
-    background-color: #FAFAFA !important;
+    background-color: #F8FBF9 !important;
 }
 .fi-ta-cell {
     color: var(--c-text-main) !important;
+}
+
+.fi-ta-header,
+.fi-ta-toolbar {
+    background-color: var(--c-surface) !important;
+    border-color: var(--c-border-soft) !important;
+}
+
+.fi-ta-search-field input {
+    background-color: #F8FBF9 !important;
+}
+
+.fi-pagination {
+    color: var(--c-text-sec) !important;
+}
+
+.fi-pagination button,
+.fi-pagination a {
+    border-radius: 10px !important;
+}
+
+.fi-tabs {
+    background-color: transparent !important;
+    border-color: var(--c-border-soft) !important;
+}
+
+.fi-tabs-item {
+    border-radius: 10px !important;
+    color: var(--c-text-sec) !important;
+}
+
+.fi-tabs-item-active {
+    background-color: rgba(16, 185, 129, 0.10) !important;
+    color: var(--c-dark) !important;
 }
 
 /* Empty State */

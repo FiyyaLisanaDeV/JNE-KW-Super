@@ -42,4 +42,17 @@ class Branch extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function operationalCityName(): string
+    {
+        if ($this->city?->name) {
+            return $this->city->name;
+        }
+
+        return trim((string) preg_replace(
+            '/\s+(Main Branch|Agent Point|Cabang|Agen|Branch|Point).*$/i',
+            '',
+            $this->name,
+        ));
+    }
 }

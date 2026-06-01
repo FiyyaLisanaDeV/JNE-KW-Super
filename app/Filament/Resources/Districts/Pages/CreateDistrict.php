@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDistrict extends CreateRecord
 {
     protected static string $resource = DistrictResource::class;
+
+    protected static bool $canCreateAnother = false;
 }

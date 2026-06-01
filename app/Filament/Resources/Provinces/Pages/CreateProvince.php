@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProvince extends CreateRecord
 {
     protected static string $resource = ProvinceResource::class;
+
+    protected static bool $canCreateAnother = false;
 }
