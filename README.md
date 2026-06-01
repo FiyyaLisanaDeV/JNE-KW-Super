@@ -22,71 +22,11 @@
 
 ---
 
-## 🚀 Memulai Instalasi Lokal
+## ⚖️ Lisensi Hak Cipta
 
-Siapkan kopi Anda ☕, lalu pastikan sistem sudah memiliki **PHP**, **Composer**, **Node.js**, **Git**, dan **MySQL**.
+Aplikasi ini dirancang untuk penggunaan komersial dan dilindungi di bawah **Aladdin Free Public License**.
+Dilarang keras menyalin, memodifikasi, menjual, atau mendistribusikan ulang *source code* maupun aset aplikasi ini tanpa izin resmi dari pemegang hak cipta **Logistik Nusantara / Lisanna Logistic**.
 
-### 1. Kloning & Persiapan
-Buka terminal dan eksekusi perintah ini:
-```bash
-git clone https://github.com/FiyyaLisanaDeV/JNE-KW-Super.git
-cd JNE-KW-Super
-
-composer install
-npm install
-```
-
-### 2. Konfigurasi Lingkungan
-Buat *file* konfigurasi lokal (*environment*):
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-Edit file `.env` dan pastikan konfigurasi *database* sesuai dengan sistem lokal Anda:
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=logistic_vendor
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-### 3. Migrasi & Sinkronisasi Wilayah
-Jalankan migrasi *database* untuk membuat semua struktur tabel:
-```bash
-php artisan migrate
-```
-**Penting:** Tarik data Provinsi, Kota/Kabupaten, dan Kecamatan langsung dari API Resmi Emsifa!
-```bash
-php artisan app:sync-regions
-```
-
-### 4. Nyalakan Mesin!
-Buka terminal dan jalankan server PHP bawaan:
-```bash
-php artisan serve
-```
-Buka **terminal baru** untuk menjalankan kompilator aset tampilan (TailwindCSS):
-```bash
-npm run dev
-```
-
----
-
-## 🔐 Akses Admin Panel
-
-Masuk ke markas besar operasional Anda:
-👉 **[http://localhost:8000/admin](http://localhost:8000/admin)**
-
-**Kredensial Default Development:**
-- **Email:** `superadmin@example.com`
-- **Password:** `password`
-
-> [!WARNING]  
-> **Keamanan:** Segera ganti *password* bawaan ini apabila sistem sudah masuk ke lingkungan *Production*! 🚨
-
----
 
 ## 📚 Pusat Dokumentasi
 
