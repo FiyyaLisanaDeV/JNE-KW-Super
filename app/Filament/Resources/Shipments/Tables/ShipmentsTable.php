@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shipments\Tables;
 
+use App\Models\Shipment;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Action;
@@ -57,13 +58,15 @@ class ShipmentsTable
                             ->badge()
                             ->searchable()
                             ->color(fn (string $state): string => match ($state) {
-                                'draft' => 'gray',
-                                'manifested' => 'warning',
-                                'in_transit' => 'info',
-                                'out_for_delivery' => 'info',
-                                'arrived' => 'success',
-                                'delivered' => 'success',
-                                'problem' => 'danger',
+                                Shipment::STATUS_CHECKED_IN => 'gray',
+                                Shipment::STATUS_WAITING_DEPARTURE => 'warning',
+                                Shipment::STATUS_IN_TRANSIT,
+                                Shipment::STATUS_OUT_FOR_DELIVERY => 'info',
+                                Shipment::STATUS_ARRIVED_DESTINATION,
+                                Shipment::STATUS_READY_FOR_PICKUP,
+                                Shipment::STATUS_COMPLETED => 'success',
+                                Shipment::STATUS_PROBLEM,
+                                Shipment::STATUS_CANCELLED => 'danger',
                                 default => 'gray',
                             }),
                         TextColumn::make('total_shipping_cost')
@@ -80,7 +83,7 @@ class ShipmentsTable
                 //
             ])
             ->recordActions([
-                \Filament\Tables\Actions\Action::make('print')
+                Action::make('print')
                     ->label('Cetak Resi')
                     ->icon('heroicon-o-printer')
                     ->url(fn ($record) => route('shipments.receipt.print', $record))

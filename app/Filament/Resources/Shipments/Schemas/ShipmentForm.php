@@ -14,6 +14,9 @@ class ShipmentForm
 {
     public static function configure(Schema $schema): Schema
     {
+        $adminBranchCity = fn (): ?string => auth()->user()?->branch?->city?->name
+            ?? auth()->user()?->branch?->operationalCityName();
+
         return $schema
             ->components([
                 Grid::make(3)
@@ -26,7 +29,12 @@ class ShipmentForm
                                     ->schema([
                                         TextInput::make('sender_name')->label('Nama Pengirim')->required(),
                                         TextInput::make('sender_phone')->label('No. HP')->tel()->required(),
-                                        TextInput::make('sender_city')->label('Kota')->required(),
+                                        TextInput::make('sender_city')
+                                            ->label('Kota Asal Paket')
+                                            ->default($adminBranchCity)
+                                            ->readOnly(fn (): bool => filled($adminBranchCity()))
+                                            ->required()
+                                            ->helperText('Otomatis mengikuti cabang akun admin yang sedang login.'),
                                         Textarea::make('sender_address')->label('Alamat Lengkap')->columnSpanFull(),
                                     ])->columns(3),
 
@@ -36,6 +44,12 @@ class ShipmentForm
                                         TextInput::make('receiver_phone')->label('No. HP')->tel()->required(),
                                         TextInput::make('receiver_city')->label('Kota')->required(),
                                         Textarea::make('receiver_address')->label('Alamat Lengkap')->columnSpanFull(),
+                                        Textarea::make('customer_note')
+                                            ->label('Catatan Tujuan / Shareloc')
+                                            ->placeholder('Tempel link share location WhatsApp atau catatan lokasi tujuan di sini.')
+                                            ->helperText('Opsional. Gunakan untuk link shareloc, patokan lokasi, atau instruksi serah terima.')
+                                            ->rows(3)
+                                            ->columnSpanFull(),
                                     ])->columns(3),
 
                                 Section::make('Detail Paket')
@@ -70,8 +84,18 @@ class ShipmentForm
                                             ])
                                             ->default('reguler')
                                             ->required(),
-                                        Select::make('origin_branch_id')->relationship('originBranch', 'name')->label('Cabang Asal')->searchable(),
-                                        Select::make('destination_branch_id')->relationship('destinationBranch', 'name')->label('Cabang Tujuan')->searchable(),
+                                        Select::make('origin_branch_id')
+                                            ->relationship('originBranch', 'name')
+                                            ->label('Cabang Asal')
+                                            ->default(fn (): ?int => auth()->user()?->branch_id)
+                                            ->disabled(fn (): bool => filled(auth()->user()?->branch_id))
+                                            ->dehydrated()
+                                            ->searchable()
+                                            ->helperText('Otomatis mengikuti cabang akun admin yang sedang login.'),
+                                        Select::make('destination_branch_id')
+                                            ->relationship('destinationBranch', 'name')
+                                            ->label('Cabang Tujuan')
+                                            ->searchable(),
                                     ]),
 
                                 Section::make('Biaya & Pembayaran')

@@ -9,6 +9,8 @@ use Illuminate\Support\Carbon;
 
 class ShipmentStats extends StatsOverviewWidget
 {
+    protected static bool $isDiscovered = false;
+
     protected static bool $isLazy = false;
 
     protected ?string $pollingInterval = null;

@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePricingRule extends CreateRecord
 {
     protected static string $resource = PricingRuleResource::class;
+
+    protected static bool $canCreateAnother = false;
 }

@@ -1,50 +1,54 @@
 <x-filament-widgets::widget>
+    @php
+        $actions = [
+            [
+                'label' => 'Buat Order Kirim',
+                'description' => 'Input data pengiriman baru',
+                'icon' => 'heroicon-o-plus-circle',
+                'url' => route('filament.admin.resources.shipments.create'),
+            ],
+            [
+                'label' => 'Daftar Resi',
+                'description' => 'Kelola semua resi aktif',
+                'icon' => 'heroicon-o-document-text',
+                'url' => route('filament.admin.resources.shipments.index'),
+            ],
+            [
+                'label' => 'Cek Tarif / Ongkir',
+                'description' => 'Kelola aturan biaya pengiriman',
+                'icon' => 'heroicon-o-calculator',
+                'url' => route('filament.admin.resources.pricing-rules.index'),
+            ],
+            [
+                'label' => 'Manifest Kendaraan',
+                'description' => 'Atur jadwal keberangkatan',
+                'icon' => 'heroicon-o-truck',
+                'url' => route('filament.admin.resources.manifests.index'),
+            ],
+        ];
+    @endphp
+
     <section>
-        <div class="flex items-center space-x-2 mb-4">
-            <x-heroicon-s-bolt class="w-6 h-6 text-primary-600" />
-            <h3 class="text-xl font-bold text-gray-900">Menu Cepat Operasional</h3>
+        <div class="mb-4 flex items-center gap-2">
+            <x-heroicon-s-bolt class="h-5 w-5 flex-shrink-0 text-emerald-700" />
+            <h2 class="text-xl font-semibold leading-7 text-slate-950">Menu Cepat Operasional</h2>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Card 1 -->
-            <a class="group bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all duration-200 flex items-start space-x-4" href="{{ route('filament.admin.resources.shipments.create') }}">
-                <div class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-primary-500/10 flex items-center justify-center text-primary-600 transition-colors flex-shrink-0">
-                    <x-heroicon-o-plus-circle class="w-6 h-6" />
-                </div>
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Buat Order Kirim</h4>
-                    <p class="text-xs font-normal text-gray-500 mt-1">Input data pengiriman baru</p>
-                </div>
-            </a>
-            <!-- Card 2 -->
-            <a class="group bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all duration-200 flex items-start space-x-4" href="{{ route('filament.admin.resources.shipments.index') }}">
-                <div class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-primary-500/10 flex items-center justify-center text-primary-600 transition-colors flex-shrink-0">
-                    <x-heroicon-o-document-text class="w-6 h-6" />
-                </div>
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Daftar Resi</h4>
-                    <p class="text-xs font-normal text-gray-500 mt-1">Kelola semua resi aktif</p>
-                </div>
-            </a>
-            <!-- Card 3 -->
-            <a class="group bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all duration-200 flex items-start space-x-4" href="{{ route('filament.admin.resources.pricing-rules.index') }}">
-                <div class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-primary-500/10 flex items-center justify-center text-primary-600 transition-colors flex-shrink-0">
-                    <x-heroicon-o-calculator class="w-6 h-6" />
-                </div>
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Cek Tarif / Ongkir</h4>
-                    <p class="text-xs font-normal text-gray-500 mt-1">Simulasi biaya pengiriman</p>
-                </div>
-            </a>
-            <!-- Card 4 -->
-            <a class="group bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:border-primary-500 hover:shadow-md transition-all duration-200 flex items-start space-x-4" href="{{ route('filament.admin.resources.manifests.index') }}">
-                <div class="w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-primary-500/10 flex items-center justify-center text-primary-600 transition-colors flex-shrink-0">
-                    <x-heroicon-o-truck class="w-6 h-6" />
-                </div>
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">Manifest Kendaraan</h4>
-                    <p class="text-xs font-normal text-gray-500 mt-1">Atur jadwal keberangkatan</p>
-                </div>
-            </a>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            @foreach ($actions as $action)
+                <a
+                    class="group flex items-start gap-4 rounded-xl border border-emerald-100 bg-white p-5 text-left shadow-sm transition-all duration-200 hover:border-emerald-600 hover:bg-emerald-50 hover:shadow-md"
+                    href="{{ $action['url'] }}"
+                >
+                    <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 transition-colors group-hover:bg-emerald-100">
+                        <x-dynamic-component :component="$action['icon']" class="h-5 w-5 flex-shrink-0" />
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block text-sm font-semibold leading-5 text-slate-950 transition-colors group-hover:text-emerald-700">{{ $action['label'] }}</span>
+                        <span class="mt-1 block text-xs leading-4 text-slate-500">{{ $action['description'] }}</span>
+                    </span>
+                </a>
+            @endforeach
         </div>
     </section>
 </x-filament-widgets::widget>

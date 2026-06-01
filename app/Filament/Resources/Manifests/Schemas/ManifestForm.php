@@ -20,9 +20,14 @@ class ManifestForm
                     ->required()
                     ->default('linehaul'),
                 Select::make('origin_branch_id')
+                    ->label('Cabang Asal')
                     ->relationship('originBranch', 'name')
-                    ->default(null),
+                    ->default(fn (): ?int => auth()->user()?->branch_id)
+                    ->disabled(fn (): bool => filled(auth()->user()?->branch_id))
+                    ->dehydrated()
+                    ->helperText('Otomatis mengikuti cabang akun admin yang sedang login.'),
                 Select::make('destination_branch_id')
+                    ->label('Cabang Tujuan')
                     ->relationship('destinationBranch', 'name')
                     ->default(null),
                 Select::make('driver_id')
